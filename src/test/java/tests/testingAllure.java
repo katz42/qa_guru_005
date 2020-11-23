@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selectors.byName;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.logevents.SelenideLogger.addListener;
+import static io.qameta.allure.Allure.step;
 
 
 class testingAllure {
@@ -15,13 +16,18 @@ class testingAllure {
     void findSelenide() {
         addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
 
-        // Open Yandex
-        open("http://www.yandex.ru");
+        String textForSearch = "Selenide";
 
-        // Search for Selenide
-        $(byName("text")).setValue("Selenide").pressEnter();
+        step("Open Yandex  // Открыть Яндекс", ()->
+        open("http://www.yandex.ru")
+        );
 
-        // Make sure results have "ru.selenide.org" page
-        $("html").shouldHave(text("ru.selenide.org"));
+        step ("Search for " + textForSearch + " // Ввести в поиск " + textForSearch + "", ()->
+        $(byName("text")).setValue(textForSearch).pressEnter()
+        );
+
+        step ("Make sure results have ru.selenide.org page // Убедиться, что в выдаче есть сайт ru.selenide.org", ()->
+        $("html").shouldHave(text("ru.selenide.org"))
+        );
     }
 }
